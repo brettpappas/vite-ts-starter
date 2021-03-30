@@ -10,3 +10,5 @@ declare module '*.md' {
   const component: ComponentOptions
   export default component
 }
+
+declare const _APP_VERSION: string

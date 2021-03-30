@@ -6,14 +6,16 @@ import Layouts from 'vite-plugin-vue-layouts'
 import ViteIcons, { ViteIconsResolver } from 'vite-plugin-icons'
 import ViteComponents from 'vite-plugin-components'
 import Markdown from 'vite-plugin-md'
-import WindiCSS from 'vite-plugin-windicss'
 import { VitePWA } from 'vite-plugin-pwa'
-import Prism from 'markdown-it-prism'
+import pkg from './package.json'
 
 export default defineConfig({
+  define: {
+    _APP_VERSION: JSON.stringify(pkg.version),
+  },
   resolve: {
     alias: {
-      '@/': `${path.resolve(__dirname, 'src')}/`,
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   plugins: [
@@ -33,10 +35,6 @@ export default defineConfig({
     Markdown({
       wrapperClasses: 'prose prose-sm m-auto text-left',
       headEnabled: true,
-      markdownItSetup(md) {
-        // https://prismjs.com/
-        md.use(Prism)
-      },
     }),
 
     // https://github.com/antfu/vite-plugin-components
@@ -59,11 +57,6 @@ export default defineConfig({
 
     // https://github.com/antfu/vite-plugin-icons
     ViteIcons(),
-
-    // https://github.com/antfu/vite-plugin-windicss
-    WindiCSS({
-      safelist: 'prose prose-sm m-auto text-left',
-    }),
 
     // https://github.com/antfu/vite-plugin-pwa
     VitePWA({
@@ -93,12 +86,10 @@ export default defineConfig({
       },
     }),
   ],
-  // https://github.com/antfu/vite-ssg
   ssgOptions: {
     script: 'async',
     formatting: 'minify',
   },
-
   optimizeDeps: {
     include: [
       'vue',
